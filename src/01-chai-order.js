@@ -47,20 +47,69 @@
  */
 export function getChaiOrderLength(order) {
   // Your code here
+  if (typeof order !== "string") {
+    return -1;
+  }
+  let trimOrder = order.trim();
+  let ordercount = trimOrder.length;
+  return ordercount;
 }
 
 export function shoutChaiOrder(order) {
   // Your code here
+  if (typeof order !== "string") {
+    return "";
+  }
+  let trimOrder = order.trim();
+  if (trimOrder === "") {
+    return "";
+  }
+  let capitalizeOrder = trimOrder.toUpperCase();
+  return capitalizeOrder;
 }
 
 export function whisperChaiOrder(order) {
   // Your code here
+
+  if (typeof order !== "string") {
+    return "";
+  }
+  let trimOrder = order.trim();
+  if (trimOrder === "") {
+    return "";
+  }
+  let lowercase = trimOrder.toLowerCase();
+  return lowercase;
 }
 
 export function hasSpecialIngredient(order, ingredient) {
   // Your code here
+  if (
+    typeof order !== "string" ||
+    typeof ingredient !== "string" ||
+    !ingredient
+  ) {
+    return false;
+  }
+  let lowerOrder = order.toLowerCase();
+  let lowerIngredient = ingredient.toLowerCase();
+  return lowerOrder.includes(lowerIngredient);
 }
 
 export function getFirstAndLastChar(order) {
   // Your code here
+  if (typeof order !== "string") {
+    return null;
+  }
+  let trimorder = order.trim();
+  if (trimorder === "") {
+    return null;
+  }
+  let first = trimorder.charAt(0);
+  let last = trimorder.at(-1);
+  const data = {
+    first: first,
+    last: last,
+  };
+  return data;
 }
