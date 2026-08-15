@@ -53,17 +53,67 @@
  *   // => "RAJASTHANI THALI (Veg) - Items: dal - Rs.250.00"
  */
 export function createThaliDescription(thali) {
-  // Your code here
+  if (!thali || !thali.name || !thali.items || !thali.price || thali.isVeg === undefined) return ""
+  const { name, items, price, isVeg } = thali
+  const updateName = name.toUpperCase();
+  const itemList = items.join(", ");
+  const value = price.toFixed(2);
+  const typeOfThali = isVeg ? "Veg" : "Non-Veg";
+
+  return `${updateName} (${typeOfThali}) - Items: ${itemList} - Rs.${value}`
 }
 
 export function getThaliStats(thalis) {
-  // Your code here
+  if (!Array.isArray(thalis) || thalis.length < 1) return null
+  let veg = 0;
+  let non_Veg = 0;
+  thalis.filter((thali) => (thali.isVeg ? veg++ : non_Veg++));
+  let average = thalis.reduce((acc, thali) => acc + thali.price / thalis.length, 0);
+  let cheap = thalis.reduce((acc, thali) => Math.min(acc, thali.price), thalis[0].price);
+  let costliest = thalis.reduce((acc, thali) => Math.max(acc, thali.price), thalis[0].price);
+  let name = thalis.map(thali => thali.name);
+
+  return {
+    totalThalis: thalis.length,
+    vegCount: veg,
+    nonVegCount: non_Veg,
+    avgPrice: average.toFixed(2),
+    cheapest: cheap,
+    costliest: costliest,
+    names: name
+  }
+
 }
 
 export function searchThaliMenu(thalis, query) {
   // Your code here
+  if (!Array.isArray(thalis) || typeof query !== "string") return [];
+  const data = thalis.filter(thali => thali.name.toLowerCase().includes(query.toLowerCase()) || thali.items.some(item => item.toLowerCase().includes(query.toLowerCase()))) // first check name and then check items 
+  //filter se thali nikalo then usmain name ko lo usko lowercase karo then usmain includes se check karo k query match kar raha hain k nehi then uske bad items ko lo usko lowercase karo then usmain includes se check karo k query match kar raha hain k nehi then usko return karo 
+  return data;
+
+
 }
 
 export function generateThaliReceipt(customerName, thalis) {
-  // Your code here
+  /*
+  Data format: thali = {
+   *   name: "Rajasthani Thali",
+   *   items: ["dal baati", "churma", "papad"],
+   *   price: 250,
+   *   isVeg: true
+   * }
+  */
+
+  if (!Array.isArray(thalis) || thalis.length < 1 || typeof customerName !== "string") return ""
+  // customerName ko uppercase karo
+  const CS = customerName.toUpperCase()
+  //we will take the thali name and price from the thali object
+  const items_with_price = thalis.map(thali => `- ${thali.name} x Rs.${thali.price}`).join("\n");
+  //we will take the total price from the thali object
+  const total_bill = thalis.reduce((acc, thali) => acc + thali.price, 0);
+  // total length karo
+  const number_of_items = thalis.length;
+   
+  return `THALI RECEIPT\n---\nCustomer: ${CS}\n${items_with_price}\n---\nTotal: Rs.${total_bill}\nItems: ${number_of_items}`
 }
